@@ -1,0 +1,18 @@
+{% extends 'root.html' %}
+{% block title %}StudyBuddy | New Topic{% endblock %}
+{% block body %}
+{% load crispy_forms_tags %}
+<div class="container" style="height: 92vh; padding-top: 50px;">
+    <h3>Create New Topic:</h3>
+    <form method="post" action="">
+
+        {% csrf_token %}
+        {{form | crispy}}
+        {% if form.class == 'host' %}
+        <h2>hi</h2>
+        {% endif %}
+        <input type="submit" value="Submit" class="btn btn-warning mt-3">
+    </form>
+</div>
+
+{% endblock %}

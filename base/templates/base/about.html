@@ -1,0 +1,79 @@
+<style>
+    *{
+        font-size: 1.1rem;
+    }
+    .navright{
+        margin-bottom: -15px;
+    }
+    .about-body{
+        height: 92vh;
+        display: grid;
+        grid-template-columns: 3fr 1.3fr;
+        
+    }
+    .about-left,.about-right{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    img{
+        border-radius: 50%;
+        height: 30vh;
+        width: 15vw;
+        border: 3px solid rgb(29, 206, 212);
+    }
+    .about-text{
+        font-family: 'Noto Sans Mono', monospace;
+    }
+    @media only screen and (max-width: 600px) {
+        .navright{
+        margin-bottom: 0px;
+    }
+    .about-body{
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+    img{
+        border-radius: 50%;
+        height: 18vh;
+        width: 30vw;
+        border: 3px solid rgb(29, 206, 212);
+    }
+    .about-right{
+        padding: 50px 0px;
+    }
+    .about-left{
+        padding-top: 50px;
+    }
+  }
+    </style>
+{% extends 'root.html' %}
+
+{% block title %}StudyBuddy | About{% endblock %}
+{% block body %} 
+
+
+<div class="container about-body" >
+<div class="about-left">
+        <img src="https://scontent.fixe1-1.fna.fbcdn.net/v/t1.6435-9/246024573_3060466380860251_8885069033806183891_n.jpg?_nc_cat=101&ccb=1-5&_nc_sid=174925&_nc_ohc=K9o36FCKKkAAX-CbsZM&_nc_ht=scontent.fixe1-1.fna&oh=0ff23431ffa6974125bb7a2ddc27b7ad&oe=6196C165" alt="developer image">
+    <br>
+    <div class="about-text text-center">
+        <u>About: </u> <br>
+        <hr>
+        This page is created by <b>Final Year Student of SDMCET </b> as a Hobby Project. Feel free to use the website.
+        This page provides platform to discuss about various technologies and stacks globally by creating rooms. It also helps in clearing any doubts posted in the rooms. Please be friendly with each others. <br>  <b>Toxicity is strinctly prohibited</b>
+    </div>
+</div>
+<div class="about-right">
+
+    <u>Contact me:</u> <br>
+    <span> <i class="fas fa-mail-bulk"></i> Email: vishalmeti8@gmail.com</span>
+     <br> 
+    <span><i class="fas fa-map-marker-alt"></i> Address: SDMCET Dharwad</span>
+
+</div>
+</div>
+     {% endblock %}

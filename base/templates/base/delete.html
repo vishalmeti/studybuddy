@@ -1,0 +1,17 @@
+{% extends 'root.html' %}
+
+{% block title %}StudyBuddy | Delete{% endblock %}
+
+{% block body %}
+
+<div class="container" style="height:88vh;" >
+    <form method="post" action="">
+        {% csrf_token %}
+        <p style=" font-family: 'Noto Sans Mono', monospace;" >Are you sure you want to delete: <b>{{obj.body}}</b> ??</p>
+        <button class="btn btn-primary" ><a  href="{{request.META.HTTP_REFERER}}">BACK</a></button>
+        <input href="{{request.META.HTTP_REFERER}}" class="btn btn-warning" type="submit" value="Delete">
+    </form>
+</div>
+
+
+{% endblock %}
