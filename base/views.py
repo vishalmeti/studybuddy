@@ -12,7 +12,7 @@ from .forms import RoomForm,MessageForm,TopicForm
 # Create your views here.
 
 
-def loginPage(request):
+def loginpage(request):
     page='login'
     if request.user.is_authenticated:
         return redirect('home')
