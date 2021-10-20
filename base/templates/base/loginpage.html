@@ -1,0 +1,63 @@
+{% extends 'root.html' %}
+
+{% block title %}StudyBuddy | Login{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+{% if page == 'login' %}
+
+<style>
+    a{
+        text-decoration: none;
+    }
+    .login-body{
+        width: 100vw;
+        height: 92vh;
+        background-color: rgba(34, 54, 90, 0.74);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+</style>
+
+<div class=" login-body">
+    <div class="text-center">
+        <h1>LOGIN <i class="fas fa-sign-in-alt"></i></h1>
+    </div>
+    <div>
+<div class=" pt-4">
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" name="username" class='form-control m-2' placeholder="Username">
+        <input type="password" name="password" class='form-control m-2' placeholder="Password">
+        <input class="btn btn-primary" type="submit" value="Login">
+    </form>
+    <p>Not registered yet? <u><a href="{% url 'register' %}">Register now</a></u></p>
+    
+</div>
+{% else %}
+<div class="login-body">
+
+<div class="text-center pt-4">
+    <h1>REGISTER <i class="fas fa-sign-in-alt"></i></h1>
+</div>
+<div class=" register container pt-4" style="height: 92vh;">
+    <form action="" method="post">
+        {% csrf_token %}
+    {{form | crispy}}
+    <br>
+    <input class='btn btn-warning' type="submit" value="Register">
+    </form>
+    <hr>
+    <p>Already registered? <u><a href="{% url 'login' %}">Login here</a></u></p>
+    
+</div>
+</div>
+{% endif %}
+</div>
+</div>
+{% endblock %}

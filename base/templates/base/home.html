@@ -1,0 +1,207 @@
+
+{% extends 'root.html' %}
+
+{% block title %}StudyBuddy | Home{% endblock %}
+
+{% block body %}
+
+<style>
+    *{
+        font-size: 1.1rem;
+    }
+    
+    .home{
+        display:grid;
+        grid-template-columns:0.5fr 3fr 1fr;
+        height: 91vh;
+        background-color: rgb(60, 83, 102);
+        color: white;
+    }
+
+    .home-left{
+        height: 91vh;
+        font-size: 2rem;
+        
+    }
+    .home-left ul {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        list-style-type: none;
+        text-decoration: underline;
+        padding-left: 0px;
+        text-align: center;
+    }
+
+    .home-mid h2,.rec,.browse{
+        font-family: 'Righteous', cursive;
+    }
+    
+    .home-left,.home-mid,.home-right{
+        overflow-y: scroll;
+        height: 100%;
+        padding: 2px;
+        
+    }
+    .home-right ,.home-mid ,.home-left{
+        border: 2px solid rgba(0, 0, 0, 0.472);
+
+    }
+    .home-right,.home-mid,.home-left{
+    background-color: rgba(34, 54, 90, 0.74);
+
+    }
+    .ownerName{
+        /* color:rgb(0, 102, 255) */
+        color:rgb(185, 145, 197)
+    }
+    .rec-block,.rooms{
+
+        background-color: rgba(38, 39, 41, 0.863);
+        border-radius: 15px;
+        padding: 12px;
+        
+    }
+    .rooms{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .mob{
+        display: none;
+        padding-left: 8px;
+    padding-top: 22px;
+    }
+
+    @media only screen and (max-width: 600px) {
+
+        .pc{
+            display: none;
+        }
+        .mob{
+            display: block;
+        }
+    
+        *{
+            font-size: 1.2rem;
+        }
+    .home-right,.home-left{
+        display: none;
+    }
+    .home{
+        display: flex;
+        justify-content: center;
+        width: 100% !important;
+        padding: 2px;
+    }
+    .home-mid{
+        width: 100vw;
+    }
+    .add{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        
+    }
+    .add1,.add2{
+        font-size:0.8rem;
+    }
+}   
+
+
+</style>
+
+<div class="home ">
+
+<div class='home-left'>
+    <h3 class=" browse text-center">Browse <i class="fab fa-searchengin" style="font-size: 1.8rem; padding-top: 5px;"></i> </h3>
+    <hr>
+    <ul>
+        <li><a href="{% url 'home' %}">All</a></li>
+        <hr>
+    {% for topic in topics %}
+        <li  ><a href="{% url 'home' %}?q={{topic.name}}">{{topic}}</a></li>
+        <hr>
+    {% endfor %}
+</ul>
+</div>
+
+<div class=" home-mid">
+    <!-- mid top adding rooms start  -->
+    <div class="container d-flex justify-content-between">
+    <div>
+    <h2 class="pc" >Total {{roomCount }} Chat-rooms available</h2>
+    <h2 class="mob">Total {{roomCount }} Rooms</h2>
+        </div>
+    <div class="add">
+        
+        <button class='btn btn-primary m-2'><a class="add1" href="{% url 'createRoom' %}"><i class="fas fa-plus-circle"></i> Add room</a></button>
+        <button class='btn btn-primary m-2'><a class="add2" href="{% url 'createTopic' %}"><i class="fas fa-plus-circle"></i> Create Topic</a></button>
+
+    
+    </div>
+
+
+</div>
+<div class="container ">
+    {% if contexts %}
+    {% for i in contexts %}
+<div class="rooms">
+    <div>
+        <b><a href="{% url 'room' i.id %}"> <u class="ownerName"> {{i.name}}</u> </a></b>
+    <span style="font-size: 15px;">@{{i.host.username}} <br></span>
+
+<small>Topic: {{i.topic.name}}</small>
+    </div>
+{% if request.user == i.host %}
+<div>
+    <a href="{% url 'updateRoom' i.id %}" class="btn btn-warning">Edit</a>
+<a href="{% url 'deleteRoom' i.id %}" class="btn btn-danger">Delete</a>
+</div>
+{% endif %}
+</div>
+<hr>
+{% endfor %}
+    {% else %}
+    <p>No rooms available</p>
+    {% endif %}
+</div>
+</div>
+
+<div class="home-right">
+    <h4 class="rec text-center" >Recent Activities</h4>
+    <hr>
+    {% if recentMsg %}
+    {% for i in recentMsg %}
+        <div class="rec-block">
+            <a href="{% url 'room' i.room.id %}" style="text-decoration: none;">
+                {% if i.body != '*** This message was deleted ***' %}
+                <b><small>@{{i.user}}</small></b> replied in <b>{{i.room}}</b> room
+                {% else %}
+                <b><small>@{{i.user}}</small></b> deleted message in <b>{{i.room}}</b> room
+                {% endif %}
+            <small>({{i.created|timesince}} ago)</small>
+            <div class="delbtn">
+            {% if request.user == i.user %}
+            {% if i.body != '*** This message was deleted ***' %}
+            <button class="btn btn-danger">
+
+                <a href="{% url 'deleteMessage' i.id %}" >Delete <i class="fas fa-trash-alt"></i></a>
+            </button>
+              {% endif %}
+              {% endif %}
+            </div>            
+            </a>
+        </div>
+        <hr>
+    {% endfor %}
+    {% else %}
+    <p>No recent activities</p>
+    {% endif %}
+</div>
+
+</div>
+
+{% endblock %}

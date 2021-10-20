@@ -1,0 +1,179 @@
+{% extends 'root.html' %} {% block title %}StudyBuddy | {{room.name}}{% endblock title %}
+{% block body %}
+
+<style>
+  *{
+    font-size: 1.1rem;
+  }
+  .room-display {
+    display: grid;
+    grid-template-columns: 3fr 0.5fr;
+    min-height: 92vh;
+    height: auto;
+    padding-bottom: 20px;
+    
+  }
+  .room-left{
+    border-right: 5px solid rgba(5, 5, 5, 0.5);
+    padding-right: 10px;
+
+  }
+
+
+  .room-top-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 10px;
+    /* background-color: red; */
+    
+  }
+  .room-top h2{
+    font-family: 'Righteous', cursive;
+  }
+
+  .created-on{
+    font-size: 0.8rem;
+  }
+  .room-right{
+    overflow: hidden;
+    width: 250px;
+  }
+  .room-desc{
+    font-size: 1rem;
+    height: auto;
+    opacity: 80%;
+  }
+  .room-details{
+    font-size: 1rem
+  }
+  .msg-display {
+    height: 60vh;
+    overflow-y: scroll;
+    margin-top: -10px;
+    
+  }
+  .msg-display{
+    /* border: 2px solid rgba(197, 100, 100, 0.616); */
+    padding: 10px;
+    border-radius: 20px ;
+    background-color: rgba(34, 33, 33, 0.431);
+    font-family: 'Courgette', cursive;
+    
+  }
+  .msgOwner{
+    color: rgb(119, 178, 233);
+  }
+  .chatbox{
+    padding: 10px 0px;
+    border-radius: 10px ;
+    font-family: 'Courgette', cursive;
+  }
+  .chatbox input{
+    padding: 10px 0px;
+    border-radius: 10px ;
+  }
+  .no-msg{
+      opacity: 70%;
+  }
+  @media only screen and (max-width: 600px) {
+    .room-right{
+        display: none;
+    }
+    .room-display{
+        display: flex;
+        justify-content: center;
+    }
+    .room-left{
+    border-right: none;
+    padding-right: 0px;
+
+  }
+  .room-details{
+    font-size: 0.7rem
+  }
+  .room-details p{
+    display: none;
+  }
+  .room-display{
+    min-height: 92vh;
+  }
+  .msgAndChat{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+}
+
+</style>
+
+<div class="container room-display">
+  <div class='room-left'>
+    <div class="room-top">
+      <div class="room-top-top ">
+        <h2>{{room.name}}</h2>
+        <h2 style="opacity: 80%;"> <small class="room-details"> host:@{{room.host}} <p class="created-on">Created on {{room.created}}</p></small></h2>
+      </div>
+    <hr>
+    <p class="room-desc">
+      Room Description: 
+      {% if room.desc %}
+      {{room.desc}}
+      {% else %}
+      <p class="room-desc">--- No Description provided ---</p>
+      {% endif %}
+    </p>
+      <br>
+    </div>
+    <div class="msgAndChat">   
+    {% if request.user.is_authenticated %}
+    <div class="chatbox">
+      <form action="" method="post" class="d-flex justify-content-between">
+        {% csrf_token %}
+        <input
+          type="text"
+          placeholder=" @{{request.user}} - Write your message here..."
+          name="msg"
+          id='msg'
+          class="form-control w-90"
+        />
+        <button class="btn btn-warning">
+          <i class="fas fa-paper-plane">Send</i>
+        </button>
+      </form>
+    </div>
+    {% else %} <p style="color: #ffc107; font-size: 1.5rem;"> <i class="fas fa-exclamation-triangle"></i> Please login to chat</p>
+    {% endif %}
+    <p>Chats:</p>
+    <div
+    class=" msg-display"
+    
+    >
+      
+      {% if message %}
+      {% for msg in message %}
+      <b class="d-flex justify-content-between"><div class="msgOwner">{{msg.user|capfirst}}</div>  
+          {% if request.user == msg.user %}
+          {% if msg.body != '*** This message was deleted ***' %}
+          <button class="btn-danger"><a href="{% url 'deleteMessage' msg.id %}" ><i class="fas fa-trash"></i></a></button>
+          {% endif %}
+          {% endif %}
+      </b> <br />
+      {{msg.body}} <small>({{msg.updated|timesince}} ago)</small>
+      <hr />
+      {% endfor %}
+
+      {% else %}
+      <p class="no-msg">No Conversations yet... <a href="#msg">Click here to start</a></p>
+      {% endif %}
+    </div>
+  </div>
+  </div>
+  <div class="p-3 room-right" >
+    <h3>Participants</h3>
+    <hr />
+    {% for parti in participants %}
+    <p><i class="fas fa-user-circle"></i> {{parti|capfirst}}</p><hr>
+    {% endfor %}
+  </div>
+</div>
+{% endblock body %}

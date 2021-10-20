@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-_qlna!qn4i^7kuyxtf1n12$2wqlt28u6s@k5jt=$nq=m0l@!i5
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'studybudddy.herokuapp.com'
+    'studybudddy.herokuapp.com',
+    '*'
 ]
 
 
